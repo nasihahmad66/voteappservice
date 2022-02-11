@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/head'); %>
+</head>
+<body class="container">
+
+<!-- <header>
+  <%- include('./partials/header'); %>
+</header> -->
+
+<main>
+  <div class="jumbotron">
+    <h1>Vote App</h1>
+    <p>Welcome to Vote App Admin</p>
+  </div>
+
+  <div class="row">
+      <div class="col-md-12 col-xs-12">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+              <div class="table-title">
+                <div class="row">
+                  <div class="col-6">
+                    <h2><b>Kandidat</b></h2>
+                  </div>
+                  <div class="col-6">
+                    <a href="#addModal" class="btn btn-sm btn-success float-right" data-toggle="modal"><i class="material-icons">&#xE147;</i></a>   
+                  </div>
+                </div>
+              </div>
+              <table id="tableKandidat" class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Kelas</th>
+                    <th>Visi</th>
+                    <th>Misi</th>
+                    <th>Foto</th>
+                    <th>Pemilih</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Add Modal HTML -->
+  <div id="addModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">            
+            <h5 class="modal-title">Tambah Kandidat</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body"> 
+            <form>         
+              <div class="form-group">
+                <label>Nama</label>
+                <input name="NamaKandidat" type="text" class="form-control" placeholder="Masukkan Nama" required>
+              </div>
+              <div class="form-group">
+                <label>Kelas</label>
+                <input name="Kelas" type="text" class="form-control" placeholder="Masukkan Kelas" required>
+              </div>
+              <div class="form-group">
+                <label>Visi</label>
+                <textarea name="Visi" type="text" class="form-control" placeholder="Masukkan Visi" required></textarea>
+              </div>
+              <div class="form-group">
+                <label>Misi</label>
+                <textarea name="Misi" type="text" class="form-control" placeholder="Masukkan Misi" required></textarea>
+              </div>  
+              <div class="form-group">
+                <label>Foto</label>
+                <input name="Foto" required type="file" name="Foto" class="form-control-file" id="foto" accept="image/png, image/jpeg">
+              </div> 
+            </form>         
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-success btn-sm" onclick="AddData()">Add</button>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal HTML -->
+  <div id="editModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">            
+          <h5 class="modal-title">Edit Produk</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body"> 
+            <form>         
+                <div class="form-group">
+                  <label>Nama</label>
+                  <input name="NamaKandidat" type="text" class="form-control" placeholder="Masukkan Nama" required>
+                </div>
+                <div class="form-group">
+                  <label>Kelas</label>
+                  <input name="Kelas" type="text" class="form-control" placeholder="Masukkan Kelas" required>
+                </div>
+                <div class="form-group">
+                  <label>Visi</label>
+                  <textarea name="Visi" type="text" class="form-control" placeholder="Masukkan Visi" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Misi</label>
+                  <textarea name="Misi" type="text" class="form-control" placeholder="Masukkan Misi" required></textarea>
+                </div>  
+                <div class="form-group">
+                  <label>Foto</label>
+                  <input name="Foto" required type="file" name="Foto" class="form-control-file" id="foto" accept="image/png, image/jpeg">
+                </div> 
+              </form>        
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+          <input onclick="SubmitEdit()" type="submit" class="btn btn-info" value="Save">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Delete Modal -->
+
+  <div id="deleteModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">            
+            <h5 class="modal-title">Hapus Produk</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">          
+            <p>Are you sure you want to delete these Records?</p>
+            <p class="text-warning"><small>This action cannot be undone.</small></p>
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <button onclick="RequestforDelete()" class="btn btn-danger">Delete</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <%- include('./partials/footer'); %>
+</footer>
+
+<!-- jquery js -->
+<script src="assets/vendor/jquery/jquery-3.6.0.js"></script>
+<!-- jquery js -->
+
+<!-- bootstrap js -->
+<script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- bootstrap js -->
+
+<script src="assets/app/helper.js"></script>
+
+<script>
+    let selectedData = {}
+        const GetData = ()=>{
+          request.get("/api/admin/vote/all",{},(res)=>{
+            RenderTableKandidat(res?.data?res.data:[])
+          })
+        }
+
+        const AddData = async ()=>{
+          const param = await GenerateParam("#addModal input[name], #addModal textarea[name]")
+          console.log(param);
+          request.post("/api/admin/vote/add",param,(data)=>{
+            if (data.success) {
+              $("#addModal").modal("hide")
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              ResetForm()
+              GetData()
+            }
+          })
+        }
+
+        const RenderTableKandidat = (data)=>{
+          let tbody = $("#tableKandidat tbody")
+            tbody.html("")
+            if (data.length > 0) {
+                data.forEach((val,key)=>{
+
+                    let tr = $("<tr>")
+                    const NamaKandidat = $("<td>").text(val.NamaKandidat)
+                    const Kelas = $("<td>").text(val.Kelas)
+                    const Visi = $("<td>").text(val.Visi)
+                    const Misi = $("<td>").text(val.Misi)
+                    const Foto = $("<td>").append(`<img src="${val.Foto}" class="img-fluid" width="30px">`)
+                    const Pemilih = $("<td>").text(val.Pemilih??0)
+                    const Action = $("<td>").append(`
+                      <a onclick="HandleEdit('${val._id}')" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                      <a onclick="HandleRemove('${val._id}')" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a> 
+                      `)
+                    const elm = tr.append(NamaKandidat,Kelas,Visi,Misi,Foto,Pemilih,Action)
+                    tbody.append(elm)
+                })
+            }else{
+                let tr = $("<tr>").append("<td style='text-align:center;' colspan='9'>No data Found</td>")
+                tbody.append(tr)
+            }
+        }
+
+        const GenerateParam = async (selector)=>{
+          let param = {}
+          const el = $(selector)
+          for (let i = 0; i < el.length; i++) {
+            const element = el[i];
+            switch (element.type) {
+              case "file":
+                param[element.name] = element?.files?.length>0? await toBase64(element.files[0]):""
+                break;
+              case "number":
+              param[element.name] = parseInt($(element).val())
+                break;
+              default:
+                param[element.name] = $(element).val()
+                break;
+            }           
+          }
+          return param
+        }
+        
+        const ResetForm = ()=>{
+          $('form').trigger("reset");
+        }
+        
+        const HandleEdit = (id)=>{
+          request.get(`/api/admin/vote/${id}`,{},(res)=>{
+            $("#editModal").modal("show")
+            selectedData = res
+            for (const key in res) {
+              if (Object.hasOwnProperty.call(res, key)) {
+                if ($(`#editModal form input[name=${key}]`).attr("type") != "file") {
+                  $(`#editModal form input[name=${key}]`).val(res[key]) 
+                }
+                if ($(`#editModal form textarea[name=${key}]`).length >0) {
+                    $(`#editModal form textarea[name=${key}]`).val(res[key])
+                }
+              }
+            }
+          })
+        }
+        
+        const HandleRemove = (id)=>{
+          selectedData = {_id:id}
+          $("#deleteModal").modal("show")
+        }
+        
+        const RequestforDelete = ()=>{
+          request.delete(`/api/admin/vote/${selectedData._id}`,{},(res)=>{
+            if (res.success) {
+              $("#deleteModal").modal("hide")
+              GetData()
+            }
+          })
+        }
+        
+        const SubmitEdit = async ()=>{
+          const newData = await GenerateParam("#editModal input[name], #editModal textarea[name]")
+          let param = {...selectedData}
+          for (const key in newData) {
+            if (Object.hasOwnProperty.call(newData, key)) {
+              const element = newData[key];
+              if (element != "") {
+                param[key] = element
+              }
+            }
+          }
+          request.put(`/api/admin/vote/edit/${param._id}`,param,(data)=>{
+            if (data.success) {
+              $("#editModal").modal("hide");
+              ResetForm()
+              GetData()
+            }
+          })
+        }
+
+        const DoLogout = ()=>{
+          request.delete("/api/user/logout",{},()=>{
+            location.href = "/login"
+          })
+        }
+        
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        $(()=>{
+          GetData()
+        })
+</script>
+
+</body>
+</html>
